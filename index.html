@@ -4,7 +4,205 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Quiz Game</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5bfb6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+            font-family: sans-serif;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        #start-screen h1 {
+            color: #e86a33;
+            margin-bottom: 20px;
+            font-size: 2.5rem;
+        }
+
+        #question-text {
+            color: #333;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .quiz-info {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .answers-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 25px;
+        }
+
+        .answer-btn {
+            background-color: #f8f0e5;
+            color: #333;
+            border: 2px solid #eadbc8;
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.3s ease;
+        }
+
+        .answer-btn:hover {
+            background-color: #eadbc8;
+            border-color: #dac0ae;
+        }
+
+        .answer-btn.correct {
+            background-color: #d4edda;
+            border-color: #a3f0c4;
+        }
+
+        .answer-btn.incorrect {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #f8f0e5;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: #e86a33;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        #result-screen h1 {
+            color: #e86a33;
+            margin-bottom: 30px;
+        }
+
+        .result-info {
+            background-color: #f8f0e5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-info p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        button {
+            background-color: #e86a33;
+            color: white;
+            border-radius: 10px;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #d45b28;
+        }
+
+        #fixed-avatar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        #fixed-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        #average-score {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 1rem;
+            z-index: 1000;
+        }
+
+        @media (max-width: 500px) {
+            .screen {
+                padding: 1rem;
+            }
+            #start-screen h1 {
+                font-size: 2rem;
+            }
+            #question-text {
+                font-size: 1.3rem;
+            }
+            .answer-btn {
+                padding: 12px;
+            }
+            button {
+                padding: 12px 25px;
+                font-size: 1rem;
+            }
+            #fixed-avatar {
+                width: 60px;
+                height: 60px;
+                top: 15px;
+                left: 15px;
+            }
+            #average-score {
+                top: 10px;
+                right: 10px;
+                font-size: 0.9rem;
+                padding: 8px 14px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -44,6 +242,114 @@
     <div id="average-score">Average score: <strong>2/5</strong></div>
 
     <img src="https://pbs.twimg.com/profile_images/1986097787415805952/t5EHhkxN_400x400.jpg" alt="Mr. Tyler Only" id="fixed-avatar">
-    <script src="script.js"></script>
+    
+    <script>
+        const startScreen = document.getElementById("start-screen");
+        const quizScreen = document.getElementById("quiz-screen");
+        const resultScreen = document.getElementById("result-screen");
+        const startButton = document.getElementById("start-btn");
+        const questionText = document.getElementById("question-text");
+        const answersContainer = document.getElementById("answers-container");
+        const currentQuestionSpan = document.getElementById("current-question");
+        const totalQuestionsSpan = document.getElementById("total-questions");
+        const scoreSpan = document.getElementById("score");
+        const finalScoreSpan = document.getElementById("final-score");
+        const maxScoreSpan = document.getElementById("max-score");
+        const resultMessage = document.getElementById("result-message");
+        const restartButton = document.getElementById("restart-btn");
+        const progressBar = document.getElementById("progress");
+
+        const quizQuestions = [
+            { question: "What is the capital of France?", answers: [{ text: "London", correct: false }, { text: "Berlin", correct: false }, { text: "Paris", correct: true }, { text: "Madrid", correct: false }] },
+            { question: "Which planet is known as the Red Planet?", answers: [{ text: "Venus", correct: false }, { text: "Mars", correct: true }, { text: "Jupiter", correct: false }, { text: "Saturn", correct: false }] },
+            { question: "What is the largest ocean on Earth?", answers: [{ text: "Atlantic Ocean", correct: false }, { text: "Indian Ocean", correct: false }, { text: "Arctic Ocean", correct: false }, { text: "Pacific Ocean", correct: true }] },
+            { question: "Which of these is NOT a programming language?", answers: [{ text: "Java", correct: false }, { text: "Python", correct: false }, { text: "Banana", correct: true }, { text: "JavaScript", correct: false }] },
+            { question: "What is the chemical symbol for gold?", answers: [{ text: "Go", correct: false }, { text: "Gd", correct: false }, { text: "Au", correct: true }, { text: "Ag", correct: false }] }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answersDisabled = false;
+
+        totalQuestionsSpan.textContent = quizQuestions.length;
+        maxScoreSpan.textContent = quizQuestions.length;
+
+        startButton.addEventListener("click", startQuiz);
+        restartButton.addEventListener("click", restartQuiz);
+
+        function startQuiz() {
+            startScreen.classList.remove("active");
+            quizScreen.classList.add("active");
+            currentQuestionIndex = 0;
+            score = 0;
+            answersDisabled = false;
+            scoreSpan.textContent = score;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const q = quizQuestions[currentQuestionIndex];
+            questionText.textContent = q.question;
+            currentQuestionSpan.textContent = currentQuestionIndex + 1;
+            answersContainer.innerHTML = "";
+            q.answers.forEach(answer => {
+                const btn = document.createElement("button");
+                btn.classList.add("answer-btn");
+                btn.textContent = answer.text;
+                btn.addEventListener("click", () => selectAnswer(answer.correct, btn));
+                answersContainer.appendChild(btn);
+            });
+            const progressPercent = (currentQuestionIndex / quizQuestions.length) * 100;
+            progressBar.style.width = progressPercent + "%";
+        }
+
+        function selectAnswer(isCorrect, button) {
+            if (answersDisabled) return;
+            answersDisabled = true;
+            const buttons = answersContainer.querySelectorAll(".answer-btn");
+            buttons.forEach(btn => btn.disabled = true);
+            if (isCorrect) {
+                button.classList.add("correct");
+                score++;
+                scoreSpan.textContent = score;
+            } else {
+                button.classList.add("incorrect");
+                buttons.forEach(btn => {
+                    if (btn.textContent === quizQuestions[currentQuestionIndex].answers.find(a => a.correct).text) {
+                        btn.classList.add("correct");
+                    }
+                });
+            }
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizQuestions.length) {
+                    answersDisabled = false;
+                    loadQuestion();
+                } else {
+                    showResults();
+                }
+            }, 1500);
+        }
+
+        function showResults() {
+            quizScreen.classList.remove("active");
+            resultScreen.classList.add("active");
+            finalScoreSpan.textContent = score;
+            const percentage = (score / quizQuestions.length) * 100;
+            let message = "";
+            if (percentage === 100) message = "perfect score but you smell funny";
+            else if (percentage >= 80) message = "almost perfect so go jump off a cliff";
+            else if (percentage >= 60) message = "not good enough champ";
+            else if (percentage >= 40) message = "horrible";
+            else message = "unbelievelbly horrible";
+            resultMessage.textContent = message;
+        }
+
+        function restartQuiz() {
+            resultScreen.classList.remove("active");
+            startScreen.classList.add("active");
+            progressBar.style.width = "0%";
+        }
+    </script>
 </body>
 </html>
