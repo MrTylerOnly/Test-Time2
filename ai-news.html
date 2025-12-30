@@ -219,6 +219,11 @@
         let allNews = [];
         let sources = ["all"];
 
+        function stripHtml(html) {
+            if (!html) return "";
+            return html.replace(/<[^>]*>/g, '').trim();
+        }
+
         async function loadNews() {
             document.getElementById("news-container").innerHTML = "<p style=\"text-align:center; color:white; font-size:1.4rem; grid-column: 1 / -1;\">Loading news…</p>";
             
@@ -231,6 +236,8 @@
                     const data = await response.json();
                     if (data.status === "ok") {
                         data.items.forEach(item => {
+                            // Clean description from HTML (removes images from Google AI posts)
+                            item.description = stripHtml(item.description);
                             item.source = feed.name;
                             allNews.push(item);
                         });
@@ -266,7 +273,7 @@
                     <div class="card-content">
                         <h2><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></h2>
                         <div class="meta"><span class="source">${item.source}</span> • ${new Date(item.pubDate).toLocaleDateString()} • ${new Date(item.pubDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                        <p class="description">${item.description ? item.description.substring(0, 300) + (item.description.length > 300 ? "…" : "") : "No description available."}</p>
+                        <p class="description">${item.description.substring(0, 300) + (item.description.length > 300 ? "…" : "") || "No description available."}</p>
                     </div>
                 `;
                 container.appendChild(card);
