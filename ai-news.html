@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & LLM News Aggregator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        header {
+            background: #007bff;
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        .controls {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .controls input, .controls select, .controls button {
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+        }
+
+        #news-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .card-content {
+            padding: 1.5rem;
+        }
+
+        .card h3 {
+            margin: 0 0 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            margin: 0 0 1rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .card .meta {
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .card a {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            background: #343a40;
+            color: white;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            #news-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Latest AI & LLM News</h1>
+        <p>Aggregated from top sources • Last updated: <span id="last-updated">Loading...</span></p>
+        
+        <div class="controls">
+            <input type="text" id="search" placeholder="Search titles or descriptions...">
+            <select id="source-filter">
+                <option value="all">All Sources</option>
+            </select>
+            <button onclick="loadNews()">Refresh</button>
+        </div>
+    </header>
+
+    <main id="news-container">
+        <p>Loading news...</p>
+    </main>
+
+    <footer>
+        <p>Built by you • Sources: OpenAI, DeepMind, arXiv AI, Hugging Face, Google AI</p>
+    </footer>
+
+    <script>
+        const RSS2JSON_API = "https://api.rss2json.com/v1/api.json?rss_url=";
+
+        const FEEDS = [
+            { name: "OpenAI", url: "https://openai.com/news/rss.xml" },
+            { name: "DeepMind", url: "https://deepmind.google/blog/rss.xml" },
+            { name: "arXiv AI", url: "https://rss.arxiv.org/rss/cs.AI" },
+            { name: "Hugging Face", url: "https://huggingface.co/blog/feed.xml" },
+            { name: "Google AI", url: "https://blog.google/technology/ai/rss/" }
+        ];
+
+        let allNews = [];
+        let sources = ["all"];
+
+        async function loadNews() {
+            document.getElementById("news-container").innerHTML = "<p>Loading news...</p>";
+            
+            allNews = [];
+            sources = ["all"];
+            
+            for (const feed of FEEDS) {
+                try {
+                    const response = await fetch(RSS2JSON_API + encodeURIComponent(feed.url));
+                    const data = await response.json();
+                    if (data.status === "ok") {
+                        data.items.forEach(item => {
+                            item.source = feed.name;
+                            allNews.push(item);
+                        });
+                        sources.push(feed.name);
+                    }
+                } catch (e) {
+                    console.error("Error loading " + feed.name, e);
+                }
+            }
+            
+            // Sort newest first
+            allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+            
+            // Limit to 50 latest articles
+            allNews = allNews.slice(0, 50);
+            
+            renderNews();
+            updateFilters();
+            document.getElementById("last-updated").textContent = new Date().toLocaleString();
+        }
+
+        function renderNews(filtered = allNews) {
+            const container = document.getElementById("news-container");
+            if (filtered.length === 0) {
+                container.innerHTML = "<p>No articles found.</p>";
+                return;
+            }
+            
+            container.innerHTML = "";
+            filtered.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "card";
+                
+                const imgUrl = item.enclosure && item.enclosure.link 
+                    ? item.enclosure.link 
+                    : "https://via.placeholder.com/600x400/007bff/ffffff?text=No+Image";
+                
+                card.innerHTML = `
+                    <img src="${imgUrl}" alt="Article image" onerror="this.src='https://via.placeholder.com/600x400/007bff/ffffff?text=No+Image'">
+                    <div class="card-content">
+                        <h3>${item.title}</h3>
+                        <div class="meta">Source: ${item.source} • ${new Date(item.pubDate).toLocaleDateString()}</div>
+                        <p>${item.description ? item.description.substring(0, 200) + "..." : "No description available."}</p>
+                        <a href="${item.link}" target="_blank" rel="noopener">Read more →</a>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function updateFilters() {
+            const select = document.getElementById("source-filter");
+            select.innerHTML = '<option value="all">All Sources</option>';
+            [...new Set(sources)].forEach(src => {
+                if (src !== "all") {
+                    const opt = document.createElement("option");
+                    opt.value = src;
+                    opt.textContent = src;
+                    select.appendChild(opt);
+                }
+            });
+        }
+
+        // Search and filter
+        document.getElementById("search").addEventListener("input", filterNews);
+        document.getElementById("source-filter").addEventListener("change", filterNews);
+
+        function filterNews() {
+            const query = document.getElementById("search").value.toLowerCase();
+            const source = document.getElementById("source-filter").value;
+            
+            let filtered = allNews;
+            if (source !== "all") {
+                filtered = filtered.filter(item => item.source === source);
+            }
+            if (query) {
+                filtered = filtered.filter(item => 
+                    item.title.toLowerCase().includes(query) || 
+                    (item.description && item.description.toLowerCase().includes(query))
+                );
+            }
+            renderNews(filtered);
+        }
+
+        // Load news when page opens
+        loadNews();
+    </script>
+</body>
+</html>
