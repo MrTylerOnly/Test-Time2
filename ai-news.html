@@ -9,131 +9,166 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: #f5f5f7;
-            color: #1d1d1f;
-            line-height: 1.5;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
         }
 
         header {
             text-align: center;
-            padding: 5rem 2rem 4rem;
-            background: #ffffff;
+            margin-bottom: 50px;
         }
 
         header h1 {
-            margin: 0;
-            font-size: 3.5rem;
+            color: white;
+            font-size: 3rem;
             font-weight: 700;
+            margin: 0 0 10px 0;
             letter-spacing: -0.5px;
         }
 
         header p {
-            margin: 1.5rem 0 0;
+            color: rgba(255, 255, 255, 0.9);
             font-size: 1.3rem;
-            color: #6e6e73;
+            margin: 0;
+        }
+
+        #last-updated {
+            font-size: 1.1rem;
+            opacity: 0.9;
         }
 
         .controls {
-            margin: 3rem auto 0;
-            max-width: 800px;
+            max-width: 900px;
+            margin: 40px auto;
             display: flex;
-            gap: 1rem;
-            justify-content: center;
+            gap: 15px;
             flex-wrap: wrap;
-            padding: 0 1rem;
+            justify-content: center;
         }
 
         .controls input, .controls select {
-            padding: 1rem 1.2rem;
+            padding: 14px 18px;
             font-size: 1.1rem;
-            border: 1px solid #d2d2d7;
+            border: none;
             border-radius: 12px;
-            background: #ffffff;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            color: white;
             flex: 1;
-            min-width: 200px;
+            min-width: 220px;
+        }
+
+        .controls input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .controls select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23ffffff' d='M1.41 0L6 4.58L10.59 0L12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 18px center;
         }
 
         .controls button {
-            padding: 1rem 2rem;
+            padding: 14px 32px;
             font-size: 1.1rem;
-            background: #0071e3;
-            color: #ffffff;
+            background: #ff9a56;
+            color: white;
             border: none;
             border-radius: 12px;
             cursor: pointer;
-            transition: background 0.2s;
+            font-weight: 600;
+            transition: background 0.3s;
         }
 
         .controls button:hover {
-            background: #0066cc;
+            background: #ff8a3d;
         }
 
-        main {
-            max-width: 1000px;
+        #news-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 2rem 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+            gap: 30px;
         }
 
-        .article {
-            background: #ffffff;
-            border-radius: 18px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
+        .card {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
-        .article:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
         }
 
-        .article h2 {
-            margin: 0 0 0.8rem;
-            font-size: 1.8rem;
+        .card-header {
+            height: 140px;
+            background: linear-gradient(135deg, #ffd8b8 0%, #ffbc7e 100%);
+        }
+
+        .card-content {
+            padding: 28px;
+        }
+
+        .card-content h2 {
+            margin: 0 0 12px 0;
+            font-size: 1.6rem;
             font-weight: 600;
+            line-height: 1.3;
         }
 
-        .article h2 a {
-            color: #0071e3;
+        .card-content h2 a {
+            color: #333;
             text-decoration: none;
         }
 
-        .article h2 a:hover {
-            text-decoration: underline;
+        .card-content h2 a:hover {
+            color: #667eea;
         }
 
         .meta {
+            color: #888;
             font-size: 1rem;
-            color: #6e6e73;
-            margin-bottom: 1.2rem;
+            margin-bottom: 16px;
         }
 
-        .meta span.source {
-            color: #0071e3;
-            font-weight: 500;
+        .meta .source {
+            color: #667eea;
+            font-weight: 600;
         }
 
         .description {
+            color: #555;
+            font-size: 1.1rem;
+            line-height: 1.6;
             margin: 0;
-            font-size: 1.15rem;
-            color: #1d1d1f;
         }
 
         footer {
             text-align: center;
-            padding: 5rem 2rem 3rem;
-            color: #86868b;
+            margin-top: 80px;
+            color: rgba(255, 255, 255, 0.8);
             font-size: 1rem;
         }
 
         @media (max-width: 768px) {
             header h1 {
-                font-size: 2.8rem;
+                font-size: 2.4rem;
             }
 
             header p {
                 font-size: 1.1rem;
+            }
+
+            #news-container {
+                grid-template-columns: 1fr;
+                padding: 0 10px;
             }
 
             .controls {
@@ -145,22 +180,13 @@
                 width: 100%;
                 max-width: 400px;
             }
-
-            .article {
-                padding: 1.5rem;
-                border-radius: 14px;
-            }
-
-            .article h2 {
-                font-size: 1.6rem;
-            }
         }
     </style>
 </head>
 <body>
     <header>
         <h1>Latest AI & LLM News</h1>
-        <p>Aggregated from leading research labs and sources • Last updated: <span id="last-updated">Loading...</span></p>
+        <p>Aggregated from leading sources • Last updated: <span id="last-updated">Loading...</span></p>
         
         <div class="controls">
             <input type="text" id="search" placeholder="Search titles or descriptions…">
@@ -171,9 +197,9 @@
         </div>
     </header>
 
-    <main id="news-container">
-        <p style="text-align:center; color:#6e6e73; font-size:1.2rem;">Loading news…</p>
-    </main>
+    <div id="news-container">
+        <p style="text-align:center; color:white; font-size:1.4rem; grid-column: 1 / -1;">Loading news…</p>
+    </div>
 
     <footer>
         <p>Built by you • Sources: OpenAI, DeepMind, arXiv AI, Hugging Face, Google AI</p>
@@ -194,7 +220,7 @@
         let sources = ["all"];
 
         async function loadNews() {
-            document.getElementById("news-container").innerHTML = "<p style=\"text-align:center; color:#6e6e73; font-size:1.2rem;\">Loading news…</p>";
+            document.getElementById("news-container").innerHTML = "<p style=\"text-align:center; color:white; font-size:1.4rem; grid-column: 1 / -1;\">Loading news…</p>";
             
             allNews = [];
             sources = ["all"];
@@ -226,21 +252,24 @@
         function renderNews(filtered = allNews) {
             const container = document.getElementById("news-container");
             if (filtered.length === 0) {
-                container.innerHTML = "<p style=\"text-align:center; color:#6e6e73; font-size:1.2rem;\">No articles found.</p>";
+                container.innerHTML = "<p style=\"text-align:center; color:white; font-size:1.4rem; grid-column: 1 / -1;\">No articles found.</p>";
                 return;
             }
             
             container.innerHTML = "";
             filtered.forEach(item => {
-                const article = document.createElement("div");
-                article.className = "article";
+                const card = document.createElement("div");
+                card.className = "card";
                 
-                article.innerHTML = `
-                    <h2><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></h2>
-                    <div class="meta"><span class="source">${item.source}</span> • ${new Date(item.pubDate).toLocaleDateString()} • ${new Date(item.pubDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
-                    <p class="description">${item.description ? item.description.substring(0, 500) + (item.description.length > 500 ? "…" : "") : "No description available."}</p>
+                card.innerHTML = `
+                    <div class="card-header"></div>
+                    <div class="card-content">
+                        <h2><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></h2>
+                        <div class="meta"><span class="source">${item.source}</span> • ${new Date(item.pubDate).toLocaleDateString()} • ${new Date(item.pubDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                        <p class="description">${item.description ? item.description.substring(0, 300) + (item.description.length > 300 ? "…" : "") : "No description available."}</p>
+                    </div>
                 `;
-                container.appendChild(article);
+                container.appendChild(card);
             });
         }
 
