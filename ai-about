@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About • AI & LLM News Aggregator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9fb;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
+        header {
+            text-align: center;
+            padding: 6rem 2rem 4rem;
+            background: #ffffff;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 3rem;
+            font-weight: 600;
+        }
+        header p {
+            margin: 2rem auto 0;
+            max-width: 700px;
+            font-size: 1.4rem;
+            color: #666;
+        }
+        main {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+            text-align: center;
+        }
+        main .bio {
+            font-size: 1.2rem;
+            color: #444;
+            margin-bottom: 3rem;
+        }
+        main .bio p {
+            margin: 1.5rem 0;
+        }
+        main a {
+            color: #007aff;
+            text-decoration: none;
+        }
+        main a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: #888;
+            font-size: 0.95rem;
+            border-top: 1px solid #e0e0e0;
+        }
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.5rem;
+            }
+            header p {
+                font-size: 1.2rem;
+            }
+            main {
+                padding: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About</h1>
+        <p>Just a curious human trying to keep up with the AI whirlwind.</p>
+    </header>
+    <main>
+        <div class="bio">
+            <p>Hi, I'm Tyler.</p>
+            <p>I built this AI & LLM News Aggregator because the field moves ridiculously fast—one day it's a new model, the next it's rewriting how we think about intelligence. Sifting through dozens of sources was eating my time, so I made this simple spot to pull the best updates into one clean feed.</p>
+            <p>No ads. No noise. Just the latest from the labs and researchers pushing things forward.</p>
+            <p>It's a side project born out of genuine fascination (and a little frustration with scattered news). If it helps you stay in the loop too, that's a win.</p>
+            <p>Always tinkering on more ideas. More projects coming soon—some serious, some probably a bit ridiculous.</p>
+            <p>Say hello on <a href="https://x.com/" target="_blank" rel="noopener">X</a>.</p>
+        </div>
+    </main>
+    <footer>
+        <p>Handcrafted with curiosity • 2025</p>
+    </footer>
+</body>
+</html>
