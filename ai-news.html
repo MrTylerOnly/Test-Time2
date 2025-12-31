@@ -13,26 +13,22 @@
             color: #1d1d1f;
             line-height: 1.6;
         }
-
         header {
             text-align: center;
             padding: 4rem 2rem 3rem;
             background: #ffffff;
             border-bottom: 1px solid #e0e0e0;
         }
-
         header h1 {
             margin: 0;
             font-size: 2.8rem;
             font-weight: 600;
         }
-
         header p {
             margin: 1rem 0 0;
             font-size: 1.2rem;
             color: #666;
         }
-
         .controls {
             max-width: 900px;
             margin: 2rem auto;
@@ -42,7 +38,6 @@
             flex-wrap: wrap;
             padding: 0 1rem;
         }
-
         .controls input, .controls select, .controls button {
             padding: 0.8rem 1.2rem;
             font-size: 1rem;
@@ -50,7 +45,6 @@
             border-radius: 8px;
             background: #ffffff;
         }
-
         .controls button {
             background: #007aff;
             color: white;
@@ -58,11 +52,9 @@
             cursor: pointer;
             transition: background 0.2s;
         }
-
         .controls button:hover {
             background: #0066cc;
         }
-
         #news-container {
             max-width: 1200px;
             margin: 0 auto;
@@ -71,7 +63,6 @@
             gap: 2rem;
             padding: 2rem 1rem;
         }
-
         .card {
             background: #ffffff;
             border-radius: 12px;
@@ -79,44 +70,36 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             transition: box-shadow 0.3s, transform 0.3s;
         }
-
         .card:hover {
             box-shadow: 0 12px 24px rgba(0,0,0,0.1);
             transform: translateY(-4px);
         }
-
         .card h2 {
             margin: 0 0 0.8rem;
             font-size: 1.5rem;
             font-weight: 600;
         }
-
         .card h2 a {
             color: #1d1d1f;
             text-decoration: none;
         }
-
         .card h2 a:hover {
             color: #007aff;
         }
-
         .meta {
             font-size: 0.95rem;
             color: #888;
             margin-bottom: 1rem;
         }
-
         .meta .source {
             color: #007aff;
             font-weight: 500;
         }
-
         .description {
             margin: 0;
             color: #444;
             font-size: 1.05rem;
         }
-
         footer {
             text-align: center;
             padding: 4rem 2rem;
@@ -124,22 +107,18 @@
             font-size: 0.95rem;
             border-top: 1px solid #e0e0e0;
         }
-
         @media (max-width: 768px) {
             header h1 {
                 font-size: 2.4rem;
             }
-
             #news-container {
                 grid-template-columns: 1fr;
                 padding: 1rem;
             }
-
             .controls {
                 flex-direction: column;
                 align-items: center;
             }
-
             .controls input, .controls select, .controls button {
                 width: 100%;
                 max-width: 400px;
@@ -151,7 +130,7 @@
     <header>
         <h1>Latest AI & LLM News</h1>
         <p>Aggregated from leading sources • Last updated: <span id="last-updated">Loading...</span></p>
-        
+       
         <div class="controls">
             <input type="text" id="search" placeholder="Search titles or descriptions…">
             <select id="source-filter">
@@ -160,42 +139,41 @@
             <button onclick="loadNews()">Refresh</button>
         </div>
     </header>
-
     <main id="news-container">
         <p style="text-align:center; color:#666; grid-column:1/-1;">Loading news…</p>
     </main>
-
     <footer>
-        <p>Built by you • Sources: OpenAI, DeepMind, arXiv AI, Hugging Face, Google AI</p>
+        <p>Built by you • Sources: OpenAI, DeepMind, arXiv AI, arXiv ML, Hugging Face, Google AI, Microsoft AI, Meta AI, BAIR Blog, Anthropic, xAI</p>
     </footer>
-
     <script>
         const RSS2JSON_API = "https://api.rss2json.com/v1/api.json?rss_url=";
-
         const FEEDS = [
             { name: "OpenAI", url: "https://openai.com/news/rss.xml" },
             { name: "DeepMind", url: "https://deepmind.google/blog/rss.xml" },
             { name: "arXiv AI", url: "https://rss.arxiv.org/rss/cs.AI" },
+            { name: "arXiv ML", url: "https://rss.arxiv.org/rss/cs.LG" },
             { name: "Hugging Face", url: "https://huggingface.co/blog/feed.xml" },
-            { name: "Google AI", url: "https://blog.google/technology/ai/rss/" }
+            { name: "Google AI", url: "https://blog.google/technology/ai/rss/" },
+            { name: "Microsoft AI", url: "https://blogs.microsoft.com/ai/feed/" },
+            { name: "Meta AI", url: "https://ai.meta.com/blog/rss/" },
+            { name: "BAIR Blog", url: "https://bair.berkeley.edu/blog/feed.xml" },
+            { name: "Anthropic", url: "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_anthropic.xml" },
+            { name: "xAI", url: "https://raw.githubusercontent.com/Olshansk/rss-feeds/main/feeds/feed_xai.xml" }
         ];
-
         let allNews = [];
         let sources = ["all"];
-
         function stripHtml(html) {
             if (!html) return "";
             const div = document.createElement("div");
             div.innerHTML = html;
             return div.textContent || div.innerText || "";
         }
-
         async function loadNews() {
             document.getElementById("news-container").innerHTML = "<p style=\"text-align:center; color:#666; grid-column:1/-1;\">Loading news…</p>";
-            
+           
             allNews = [];
             sources = ["all"];
-            
+           
             for (const feed of FEEDS) {
                 try {
                     const response = await fetch(RSS2JSON_API + encodeURIComponent(feed.url));
@@ -212,27 +190,26 @@
                     console.error("Error loading " + feed.name, e);
                 }
             }
-            
+           
             allNews.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
             allNews = allNews.slice(0, 50);
-            
+           
             renderNews();
             updateFilters();
             document.getElementById("last-updated").textContent = new Date().toLocaleString();
         }
-
         function renderNews(filtered = allNews) {
             const container = document.getElementById("news-container");
             if (filtered.length === 0) {
                 container.innerHTML = "<p style=\"text-align:center; color:#666; grid-column:1/-1;\">No articles found.</p>";
                 return;
             }
-            
+           
             container.innerHTML = "";
             filtered.forEach(item => {
                 const card = document.createElement("div");
                 card.className = "card";
-                
+               
                 card.innerHTML = `
                     <h2><a href="${item.link}" target="_blank" rel="noopener">${item.title}</a></h2>
                     <div class="meta"><span class="source">${item.source}</span> • ${new Date(item.pubDate).toLocaleDateString()} • ${new Date(item.pubDate).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
@@ -241,7 +218,6 @@
                 container.appendChild(card);
             });
         }
-
         function updateFilters() {
             const select = document.getElementById("source-filter");
             select.innerHTML = '<option value="all">All Sources</option>';
@@ -254,27 +230,24 @@
                 }
             });
         }
-
         document.getElementById("search").addEventListener("input", filterNews);
         document.getElementById("source-filter").addEventListener("change", filterNews);
-
         function filterNews() {
             const query = document.getElementById("search").value.toLowerCase();
             const source = document.getElementById("source-filter").value;
-            
+           
             let filtered = allNews;
             if (source !== "all") {
                 filtered = filtered.filter(item => item.source === source);
             }
             if (query) {
-                filtered = filtered.filter(item => 
-                    item.title.toLowerCase().includes(query) || 
+                filtered = filtered.filter(item =>
+                    item.title.toLowerCase().includes(query) ||
                     (item.description && item.description.toLowerCase().includes(query))
                 );
             }
             renderNews(filtered);
         }
-
         loadNews();
     </script>
 </body>
