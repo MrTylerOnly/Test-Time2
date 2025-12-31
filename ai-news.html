@@ -18,6 +18,25 @@
             padding: 4rem 2rem 3rem;
             background: #ffffff;
             border-bottom: 1px solid #e0e0e0;
+            position: relative;
+        }
+        .about-button {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            padding: 0.6rem 1.2rem;
+            font-size: 0.95rem;
+            background: #007aff;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .about-button:hover {
+            background: #0066cc;
         }
         header h1 {
             margin: 0;
@@ -111,6 +130,12 @@
             header h1 {
                 font-size: 2.4rem;
             }
+            .about-button {
+                top: 1rem;
+                right: 1rem;
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
             #news-container {
                 grid-template-columns: 1fr;
                 padding: 1rem;
@@ -128,6 +153,13 @@
 </head>
 <body>
     <header>
+        <a href="https://mrtyleronly.com/ai-about.html" class="about-button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12zm0 1A7 7 0 1 1 8 1a7 7 0 0 1 0 14z" fill="currentColor"/>
+                <path d="M8 5.5a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm0-2a.5.5 0 1 1 0 1 .5.5 0 0 1 0-1z" fill="currentColor"/>
+            </svg>
+            About
+        </a>
         <h1>Latest AI & LLM News</h1>
         <p>Aggregated from leading sources • Last updated: <span id="last-updated">Loading...</span></p>
        
