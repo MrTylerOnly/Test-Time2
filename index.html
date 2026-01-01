@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tyler's Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://pbs.twimg.com/profile_images/1986097787415805952/t5EHhkxN_400x400.jpg">
+
+    
     <style>
         * {
             margin: 0;
@@ -13,235 +16,299 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 2rem;
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+            line-height: 1.6;
+            transition: background-color 0.4s, color 0.4s;
         }
 
-        .container {
+        header nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo span {
+            font-weight: 400;
+            color: #666;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #00c853;
+        }
+
+        #theme-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .hero-content p {
+            font-size: 1.8rem;
+        }
+
+        .projects, .about {
+            padding: 100px 50px;
+            text-align: center;
+        }
+
+        .projects h2, .about h2 {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        header {
-            text-align: center;
-            color: white;
-            margin-bottom: 3rem;
-            animation: fadeInDown 0.8s ease;
-        }
-
-        .profile-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .profile-img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 5px solid white;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
-            object-fit: cover;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
         .project-card {
             background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: fadeInUp 0.8s ease;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .project-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
-        .project-thumbnail {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, #f5bfb6 0%, #e86a33 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            color: white;
+        .project-card h3 {
+            font-size: 1.6rem;
+            margin-bottom: 20px;
         }
 
-        .project-content {
-            padding: 1.5rem;
+        .project-card p {
+            margin-bottom: 30px;
+            color: #555;
         }
 
-        .project-title {
-            font-size: 1.5rem;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-description {
-            color: #666;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .project-link {
+        .btn {
             display: inline-block;
-            background: #667eea;
+            padding: 12px 24px;
+            background-color: #00c853;
             color: white;
-            padding: 0.7rem 1.5rem;
+            text-decoration: none;
             border-radius: 8px;
-            text-decoration: none;
-            transition: background 0.3s ease;
             font-weight: 600;
+            transition: background-color 0.3s;
         }
 
-        .project-link:hover {
-            background: #5568d3;
+        .btn:hover {
+            background-color: #00b140;
         }
 
-        .social-links {
-            text-align: center;
-            margin-top: 3rem;
+        .btn.disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
-        .social-links a {
-            color: white;
-            text-decoration: none;
-            margin: 0 1rem;
-            font-size: 1.1rem;
-            opacity: 0.9;
-            transition: opacity 0.3s ease;
-        }
-
-        .social-links a:hover {
-            opacity: 1;
-            text-decoration: underline;
+        .about {
+            background-color: #f1f8e9;
         }
 
         footer {
             text-align: center;
+            padding: 30px;
+            background-color: #212529;
             color: white;
-            margin-top: 3rem;
-            opacity: 0.8;
-            font-size: 0.9rem;
         }
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* Dark Mode */
+        body.dark {
+            background-color: #121212;
+            color: #e0e0e0;
         }
 
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        body.dark header nav {
+            background-color: rgba(18, 18, 18, 0.95);
         }
 
+        body.dark .nav-links a {
+            color: #e0e0e0;
+        }
+
+        body.dark .nav-links a:hover {
+            color: #00ff88;
+        }
+
+        body.dark .hero {
+            background: linear-gradient(135deg, #1e3a8a, #1e40af);
+        }
+
+        body.dark .project-card {
+            background: #1e1e1e;
+        }
+
+        body.dark .about {
+            background-color: #1a2f1a;
+        }
+
+        body.dark footer {
+            background-color: #0d0d0d;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2rem;
+            header nav {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
             }
 
-            .tagline {
-                font-size: 1rem;
+            .nav-links {
+                gap: 20px;
             }
 
-            .profile-img {
-                width: 120px;
-                height: 120px;
+            .hero-content h1 {
+                font-size: 3rem;
             }
 
-            .projects-grid {
-                grid-template-columns: 1fr;
+            .hero-content p {
+                font-size: 1.5rem;
+            }
+
+            .projects, .about {
+                padding: 80px 20px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="profile-section">
-                <img src="https://pbs.twimg.com/profile_images/1986097787415805952/t5EHhkxN_400x400.jpg" alt="Tyler" class="profile-img">
-                <div>
-                    <h1>Tyler's Portfolio</h1>
-                    <p class="tagline">Web Developer | Creative Coder</p>
-                </div>
+    <header>
+        <nav>
+            <div class="logo">
+                <h1>Tyler<span>'s Portfolio</span></h1>
             </div>
-        </header>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+            <button id="theme-toggle" aria-label="Toggle dark mode">🌙</button>
+        </nav>
+    </header>
 
-        <main>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-thumbnail">🧠</div>
-                    <div class="project-content">
-                        <h2 class="project-title">Quiz Game</h2>
-                        <p class="project-description">An interactive quiz game with multiple choice questions, score tracking, and hilarious result messages. Test your knowledge across various topics!</p>
-                        <a href="quiz.html" class="project-link">View Project →</a>
-                    </div>
-                </div>
-
-                <!-- Add more project cards here as you add more projects -->
-                <div class="project-card">
-                    <div class="project-thumbnail">📰</div>
-                    <div class="project-content">
-                        <h2 class="project-title">LLM News Aggregator</h2>
-                        <p class="project-description">Currently building a news aggregator specifically for LLM and AI updates. Stay informed on the latest developments in Large Language Models!</p>
-                        <a href="#" class="project-link" style="background: #ffa500; pointer-events: none;">In Development</a>
-                    </div>
-                </div>
-
-                <div class="project-card">
-                    <div class="project-thumbnail">➕</div>
-                    <div class="project-content">
-                        <h2 class="project-title">Coming Soon</h2>
-                        <p class="project-description">More awesome projects are on the way! Check back soon to see what I'm working on next.</p>
-                        <a href="#" class="project-link" style="background: #ccc; pointer-events: none;">Coming Soon</a>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <div class="social-links">
-            <a href="https://twitter.com/MrTylerOnly" target="_blank">Twitter</a>
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Tyler's Portfolio</h1>
+            <p>Web Developer & Creative Coder 🧠</p>
         </div>
+    </section>
 
-        <footer>
-            <p>&copy; 2024 Tyler. Built with passion and code.</p>
-        </footer>
-    </div>
+    <section id="projects" class="projects">
+        <h2>My Projects</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>🧠 Interactive Quiz Game</h3>
+                <p>Test your knowledge with fun multiple-choice questions. Tracks your score and gives hilarious result messages!</p>
+                <a href="quiz.html" class="btn">View Project →</a>
+            </div>
+
+            <div class="project-card">
+                <h3>📰 LLM News Aggregator</h3>
+                <p>Stay updated with the latest in Large Language Models and AI developments.<br><em>In Development</em></p>
+                <a href="#" class="btn disabled">Coming Soon</a>
+            </div>
+
+            <div class="project-card">
+                <h3>➕ More Coming Soon</h3>
+                <p>New creative coding experiments and interactive tools in the works!</p>
+                <a href="#" class="btn disabled">Stay Tuned</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <p>I'm a web developer who loves building experiences with HTML, CSS, and JavaScript.</p>
+        <p>Always experimenting with creative coding, AI tools, and fun projects. Thanks for visiting!</p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Tyler | Built with 💻 and ☕</p>
+    </footer>
+
+    <script>
+        const toggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark');
+            toggleButton.textContent = '☀️';
+        }
+
+        // Toggle theme on click
+        toggleButton.addEventListener('click', () => {
+            body.classList.toggle('dark');
+
+            if (body.classList.contains('dark')) {
+                toggleButton.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                toggleButton.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
