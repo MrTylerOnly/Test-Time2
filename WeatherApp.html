@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Weather App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #222;
+        }
+
+        .card {
+            width: 90%;
+            max-width: 470px;
+            background: linear-gradient(135deg, #00feba, #5b548a);
+            color: #fff;
+            margin: 100px auto 0;
+            border-radius: 20px;
+            padding: 40px 35px;
+            text-align: center;
+        }
+
+        .search {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search input {
+            border: 0;
+            outline: 0;
+            background: #ebfffc;
+            color: #555;
+            padding: 10px 25px;
+            height: 60px;
+            border-radius: 30px;
+            flex: 1;
+            margin-right: 16px;
+            font-size: 18px;
+        }
+
+        .search button {
+            border: 0;
+            outline: 0;
+            background: #ebfffc;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            cursor: pointer;
+        }
+
+        .search button img {
+            width: 20px;
+        }
+
+        .weather-icon {
+            width: 170px;
+            margin-top: 30px;
+        }
+
+        .weather h1 {
+            font-size: 80px;
+            font-weight: 500;
+        }
+
+        .weather h2 {
+            font-size: 45px;
+            font-weight: 400;
+            margin-top: -10px;
+        }
+
+        .details {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            margin-top: 50px;
+        }
+
+        .col {
+            display: flex;
+            align-items: center;
+            text-align: left;
+        }
+
+        .col img {
+            width: 40px;
+            margin-right: 10px;
+        }
+
+        .humidity, .wind {
+            font-size: 28px;
+            margin-top: -6px;
+        }
+
+        .weather {
+            display: none; /* Hidden until weather loads */
+        }
+
+        .error {
+            text-align: left;
+            margin-left: 10px;
+            font-size: 14px;
+            margin-top: 10px;
+            display: none;
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="Enter city name" spellcheck="false">
+            <button>
+                <img src="https://img.icons8.com/ios-filled/50/000000/search.png" alt="search">
+            </button>
+        </div>
+        <p class="error">City not found. Try again!</p>
+
+        <div class="weather">
+            <img src="https://openweathermap.org/img/wn/01d@4x.png" class="weather-icon" alt="weather icon">
+            <h1 class="temp">72°F</h1>
+            <h2 class="city">Phoenix</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="https://img.icons8.com/ios/50/ffffff/humidity.png" alt="humidity">
+                    <div>
+                        <p class="humidity">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="https://img.icons8.com/ios/50/ffffff/wind.png" alt="wind">
+                    <div>
+                        <p class="wind">15 mph</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "YOUR_NEW_API_KEY_HERE"; // ⚠️ REPLACE WITH A FRESH KEY!
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=imperial&q=";
+
+        const searchBox = document.querySelector(".search input");
+        const searchBtn = document.querySelector(".search button");
+        const weatherDiv = document.querySelector(".weather");
+        const errorMsg = document.querySelector(".error");
+        const weatherIcon = document.querySelector(".weather-icon");
+
+        async function checkWeather(city) {
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+
+            // Handle invalid city or API errors
+            if (response.status === 404 || response.status === 401) {
+                errorMsg.style.display = "block";
+                weatherDiv.style.display = "none";
+                return;
+            }
+
+            const data = await response.json();
+            console.log(data);
+
+            // Update content
+            document.querySelector(".city").textContent = data.name;
+            document.querySelector(".temp").textContent = Math.round(data.main.temp) + "°F";
+            document.querySelector(".humidity").textContent = data.main.humidity + "%";
+            document.querySelector(".wind").textContent = data.wind.speed + " mph";
+
+            // Update weather icon based on condition
+            const iconCode = data.weather[0].icon;
+            weatherIcon.src = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
+
+            // Show weather, hide error
+            weatherDiv.style.display = "block";
+            errorMsg.style.display = "none";
+        }
+
+        // Trigger on button click
+        searchBtn.addEventListener("click", () => {
+            if (searchBox.value.trim() !== "") {
+                checkWeather(searchBox.value.trim());
+            }
+        });
+
+        // Trigger on Enter key
+        searchBox.addEventListener("keypress", (e) => {
+            if (e.key === "Enter" && searchBox.value.trim() !== "") {
+                checkWeather(searchBox.value.trim());
+            }
+        });
+
+        // Optional: Load default city on page load
+        checkWeather("Phoenix");
+    </script>
+</body>
+</html>
