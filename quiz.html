@@ -369,10 +369,10 @@
             nextBtn.style.display = 'none';
 
             let message = "";
-            if (score === questions.length) message = "Perfect! You're a genius! 🏆";
-            else if (score >= questions.length * 0.7) message = "Great job! 🌟";
-            else if (score >= questions.length * 0.5) message = "Not bad! Keep learning! 📚";
-            else message = "Better luck next time! 😅";
+            if (score === questions.length) message = "perfect, but took long enough 🏆";
+            else if (score >= questions.length * 0.7) message = "decent🌟";
+            else if (score >= questions.length * 0.5) message = "Give up now..";
+            else message = "You suck bro 😅";
 
             resultEl.innerHTML = `You scored ${score} out of ${questions.length}!<br><br>${message}`;
             restartBtn.style.display = 'block';
@@ -393,3 +393,4 @@
     </script>
 </body>
 </html>
+
