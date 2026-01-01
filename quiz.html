@@ -6,28 +6,27 @@
     <title>Interactive Quiz Game | Tyler's Portfolio</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="icon" type="image/png" href="https://pbs.twimg.com/profile_images/1986097787415805952/t5EHhkxN_400x400.jpg">
-    
+
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', Arial, sans-serif;
-            background-color: #f8f9fa;
-            color: #212529;
+            background-color: #f5bfb6; /* Your desired peach-pink background */
+            color: #333; /* Darker text for readability */
             line-height: 1.6;
             transition: background-color 0.4s, color 0.4s;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
-
         header nav {
             position: fixed;
             top: 0;
+            left: 0;
             width: 100%;
             display: flex;
             justify-content: space-between;
@@ -38,137 +37,183 @@
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-
         .logo h1 {
             font-size: 1.8rem;
             font-weight: 700;
+            color: #e86a33;
         }
-
         .logo span {
             font-weight: 400;
             color: #666;
         }
-
         .nav-links {
             display: flex;
             gap: 30px;
             list-style: none;
         }
-
         .nav-links a {
             text-decoration: none;
             color: #333;
             font-weight: 600;
             transition: color 0.3s;
         }
-
         .nav-links a:hover {
-            color: #00c853;
+            color: #e86a33;
         }
-
         #theme-toggle {
             background: none;
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
         }
-
         main {
-            padding-top: 120px;
+            padding-top: 100px;
             display: flex;
             justify-content: center;
             align-items: flex-start;
             flex: 1;
+            position: relative;
+        }
+
+        /* Fixed Avatar - Below header */
+        #fixed-avatar {
+            position: fixed;
+            top: 90px;
+            left: 20px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            z-index: 900;
+            transition: transform 0.3s ease;
+        }
+        #fixed-avatar:hover {
+            transform: scale(1.1);
+        }
+
+        /* Average Score - Below header */
+        #average-score {
+            position: fixed;
+            top: 90px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-size: 1rem;
+            z-index: 900;
         }
 
         .quiz-card {
             width: 90%;
             max-width: 600px;
-            background: white;
-            color: #212529;
+            background: rgba(255, 255, 255, 0.95); /* Semi-transparent white for readability */
+            color: #333;
             margin: 40px auto;
             border-radius: 20px;
             padding: 40px;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
             transition: transform 0.3s;
+            backdrop-filter: blur(5px);
         }
-
         .quiz-card:hover {
             transform: translateY(-10px);
         }
-
         .quiz-card h1 {
             font-size: 2.8rem;
             margin-bottom: 20px;
-            color: #00c853;
+            color: #e86a33;
+        }
+        .quiz-card p {
+            font-size: 1.2rem;
+            color: #555;
+            margin: 20px 0;
+        }
+
+        #start-screen {
+            display: block;
+        }
+        #quiz-content {
+            display: none;
+        }
+
+        #start-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            background: #e86a33;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        #start-btn:hover {
+            background: #d45b28;
         }
 
         .quiz-card h2 {
             font-size: 1.8rem;
             margin: 30px 0 20px;
+            color: #333;
         }
-
         .options {
             display: flex;
             flex-direction: column;
             gap: 15px;
             margin: 30px 0;
         }
-
         .option-btn {
             padding: 15px 20px;
             font-size: 1.2rem;
-            background: #f0f0f0;
-            border: 2px solid #ddd;
+            background: #f8f0e5;
+            border: 2px solid #eadbc8;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s;
+            text-align: left;
+            color: #333;
         }
-
         .option-btn:hover {
-            background: #e0e0e0;
-            border-color: #00c853;
+            background: #eadbc8;
+            border-color: #dac0ae;
         }
-
         .option-btn.correct {
             background: #d4edda;
-            border-color: #28a745;
+            border-color: #a3f0c4;
             color: #155724;
         }
-
         .option-btn.wrong {
             background: #f8d7da;
-            border-color: #dc3545;
+            border-color: #f5c6cb;
             color: #721c24;
         }
-
         #next-btn {
             margin-top: 30px;
             padding: 12px 30px;
             font-size: 1.2rem;
-            background: #00c853;
+            background: #e86a33;
             color: white;
             border: none;
             border-radius: 12px;
             cursor: pointer;
             display: none;
         }
-
         #next-btn:hover {
-            background: #00b140;
+            background: #d45b28;
         }
-
         #result {
             font-size: 2rem;
             margin: 40px 0;
             font-weight: 600;
+            color: #e86a33;
         }
-
         #restart-btn {
             padding: 12px 30px;
             font-size: 1.2rem;
-            background: #00c853;
+            background: #e86a33;
             color: white;
             border: none;
             border-radius: 12px;
@@ -188,32 +233,34 @@
             background-color: #121212;
             color: #e0e0e0;
         }
-
         body.dark header nav {
             background-color: rgba(18, 18, 18, 0.95);
         }
-
         body.dark .nav-links a {
             color: #e0e0e0;
         }
-
         body.dark .nav-links a:hover {
             color: #00ff88;
         }
-
         body.dark .quiz-card {
-            background: #1e1e1e;
+            background: rgba(30, 30, 30, 0.95);
+            color: #e0e0e0;
         }
-
         body.dark .option-btn {
             background: #2c2c2c;
             border-color: #444;
             color: #e0e0e0;
         }
-
         body.dark .option-btn:hover {
             background: #383838;
-            border-color: #00ff88;
+        }
+        body.dark #average-score {
+            background: rgba(255,255,255,0.2);
+            color: #e0e0e0;
+        }
+        body.dark .quiz-card h1,
+        body.dark #result {
+            color: #ff8a65;
         }
 
         /* Responsive */
@@ -223,12 +270,22 @@
                 flex-direction: column;
                 gap: 15px;
             }
-
+            #fixed-avatar {
+                width: 60px;
+                height: 60px;
+                top: 100px;
+                left: 15px;
+            }
+            #average-score {
+                top: 100px;
+                right: 15px;
+                font-size: 0.9rem;
+                padding: 8px 14px;
+            }
             .quiz-card {
                 padding: 30px 20px;
                 margin: 20px auto;
             }
-
             .quiz-card h1 {
                 font-size: 2.2rem;
             }
@@ -236,6 +293,9 @@
     </style>
 </head>
 <body>
+    <img src="https://pbs.twimg.com/profile_images/1986097787415805952/t5EHhkxN_400x400.jpg" alt="Mr. Tyler Only" id="fixed-avatar">
+    <div id="average-score">Average score: <strong>2/5</strong></div>
+
     <header>
         <nav>
             <div class="logo">
@@ -252,15 +312,19 @@
 
     <main>
         <div class="quiz-card">
-            <h1>🧠 Interactive Quiz Game</h1>
-            <h2 id="question">Click Start to begin!</h2>
+            <div id="start-screen">
+                <h1>🧠 Quiz Game</h1>
+                <p>can't believe you're here right now</p>
+                <button id="start-btn">Start Test</button>
+            </div>
 
-            <div class="options" id="options"></div>
-
-            <button id="next-btn">Next Question</button>
-
-            <div id="result"></div>
-            <button id="restart-btn" style="display:none;">Play Again</button>
+            <div id="quiz-content">
+                <h2 id="question"></h2>
+                <div class="options" id="options"></div>
+                <button id="next-btn">Next Question</button>
+                <div id="result"></div>
+                <button id="restart-btn" style="display:none;">Play Again</button>
+            </div>
         </div>
     </main>
 
@@ -269,15 +333,13 @@
     </footer>
 
     <script>
-        // Dark mode toggle (shared across site)
+        // Dark mode toggle
         const toggleButton = document.getElementById('theme-toggle');
         const body = document.body;
-
         if (localStorage.getItem('theme') === 'dark') {
             body.classList.add('dark');
             toggleButton.textContent = '☀️';
         }
-
         toggleButton.addEventListener('click', () => {
             body.classList.toggle('dark');
             toggleButton.textContent = body.classList.contains('dark') ? '☀️' : '🌙';
@@ -285,48 +347,36 @@
         });
 
         // Quiz Logic
-        const questions = [
-            {
-                question: "What is the capital of France?",
-                options: ["London", "Berlin", "Paris", "Madrid"],
-                answer: 2
-            },
-            {
-                question: "Which planet is known as the Red Planet?",
-                options: ["Venus", "Mars", "Jupiter", "Saturn"],
-                answer: 1
-            },
-            {
-                question: "What is 2 + 2?",
-                options: ["3", "4", "5", "6"],
-                answer: 1
-            },
-            {
-                question: "Who painted the Mona Lisa?",
-                options: ["Van Gogh", "Picasso", "Da Vinci", "Michelangelo"],
-                answer: 2
-            },
-            {
-                question: "What is the largest ocean on Earth?",
-                options: ["Atlantic", "Indian", "Arctic", "Pacific"],
-                answer: 3
-            }
-        ];
-
-        let currentQuestion = 0;
-        let score = 0;
-
+        const startScreen = document.getElementById('start-screen');
+        const quizContent = document.getElementById('quiz-content');
+        const startBtn = document.getElementById('start-btn');
         const questionEl = document.getElementById('question');
         const optionsEl = document.getElementById('options');
         const nextBtn = document.getElementById('next-btn');
         const resultEl = document.getElementById('result');
         const restartBtn = document.getElementById('restart-btn');
 
+        const questions = [
+            { question: "What is the capital of France?", options: ["London", "Berlin", "Paris", "Madrid"], answer: 2 },
+            { question: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], answer: 1 },
+            { question: "What is 2 + 2?", options: ["3", "4", "5", "6"], answer: 1 },
+            { question: "Who painted the Mona Lisa?", options: ["Van Gogh", "Picasso", "Da Vinci", "Michelangelo"], answer: 2 },
+            { question: "What is the largest ocean on Earth?", options: ["Atlantic", "Indian", "Arctic", "Pacific"], answer: 3 }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        startBtn.onclick = () => {
+            startScreen.style.display = 'none';
+            quizContent.style.display = 'block';
+            loadQuestion();
+        };
+
         function loadQuestion() {
             const q = questions[currentQuestion];
             questionEl.textContent = q.question;
             optionsEl.innerHTML = '';
-
             q.options.forEach((option, index) => {
                 const btn = document.createElement('button');
                 btn.classList.add('option-btn');
@@ -334,15 +384,12 @@
                 btn.onclick = () => selectAnswer(index, btn);
                 optionsEl.appendChild(btn);
             });
-
             nextBtn.style.display = 'none';
         }
 
         function selectAnswer(selected, btn) {
             const correct = questions[currentQuestion].answer;
-
             document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-
             if (selected === correct) {
                 btn.classList.add('correct');
                 score++;
@@ -350,7 +397,6 @@
                 btn.classList.add('wrong');
                 document.querySelectorAll('.option-btn')[correct].classList.add('correct');
             }
-
             nextBtn.style.display = 'block';
         }
 
@@ -367,13 +413,11 @@
             questionEl.style.display = 'none';
             optionsEl.style.display = 'none';
             nextBtn.style.display = 'none';
-
             let message = "";
             if (score === questions.length) message = "perfect, but took long enough 🏆";
-            else if (score >= questions.length * 0.7) message = "decent🌟";
+            else if (score >= questions.length * 0.7) message = "decent 🌟";
             else if (score >= questions.length * 0.5) message = "Give up now..";
             else message = "You suck bro 😅";
-
             resultEl.innerHTML = `You scored ${score} out of ${questions.length}!<br><br>${message}`;
             restartBtn.style.display = 'block';
         }
@@ -387,10 +431,6 @@
             restartBtn.style.display = 'none';
             loadQuestion();
         };
-
-        // Start the quiz
-        loadQuestion();
     </script>
 </body>
 </html>
-
