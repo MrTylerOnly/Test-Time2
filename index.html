@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tyler's Room — Rebuilding</title>
+<title>Tyler's Portfolio — Rebuilding</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap');
 
@@ -111,6 +111,7 @@
   .line{ opacity:0; animation: appear .1s forwards; }
   .ok{ color: var(--mint); }
   .pending{ color: var(--amber); }
+  .red{ color: var(--red); }
   .muted{ color: var(--text-dim); }
 
   @keyframes appear{ to{ opacity:1; } }
@@ -142,24 +143,13 @@
     max-width: 46ch;
   }
 
-  .links{
-    display:flex;
-    flex-wrap: wrap;
-    gap: 10px;
+  p.sub a{
+    color: var(--mint);
+    text-decoration: none;
+    border-bottom: 1px solid var(--panel-border);
   }
-  .links a{
-    font-family:'JetBrains Mono', monospace;
-    font-size: 13px;
-    color: var(--text);
-    text-decoration:none;
-    background: var(--panel);
-    border: 1px solid var(--panel-border);
-    padding: 9px 13px;
-    border-radius: 7px;
-    transition: border-color .15s ease, color .15s ease;
-  }
-  .links a:hover{ border-color: var(--mint); color: var(--mint); }
-  .links a:focus-visible{ outline: 2px solid var(--mint); outline-offset: 2px; }
+  p.sub a:hover{ border-bottom-color: var(--mint); }
+  p.sub a:focus-visible{ outline: 2px solid var(--mint); outline-offset: 2px; }
 
   footer{
     margin-top: 34px;
@@ -179,7 +169,7 @@
 <div class="wrap">
 
   <div class="toprow">
-    <span>mrtyleronly.com</span>
+    <span>mrtyleronly</span>
     <button class="toggle" id="themeToggle" aria-label="Toggle light and dark theme">🌙</button>
   </div>
 
@@ -191,20 +181,16 @@
     <div class="screen" id="screen">
       <div class="line" style="animation-delay:.1s"><span class="prompt">$</span> <span class="cmd">npm run rebuild</span></div>
       <div class="line" style="animation-delay:.5s">&nbsp;</div>
-      <div class="line" style="animation-delay:.7s"><span class="ok">✓</span> weather app <span class="muted">— live</span></div>
-      <div class="line" style="animation-delay:1.0s"><span class="ok">✓</span> quiz game <span class="muted">— live</span></div>
+      <div class="line" style="animation-delay:.7s"><span class="red">✕</span> weather app <span class="muted">— offline</span></div>
+      <div class="line" style="animation-delay:1.0s"><span class="red">✕</span> quiz game <span class="muted">— offline</span></div>
       <div class="line" style="animation-delay:1.3s"><span class="pending">◐</span> LLM news aggregator <span class="muted">— in progress</span></div>
       <div class="line" style="animation-delay:1.6s"><span class="pending">◐</span> new site design <span class="muted">— in progress</span><span class="cursor"></span></div>
     </div>
   </div>
 
-  <h1>The site's getting rebuilt.</h1>
-  <p class="sub">Tyler's back in the editor, shipping a few new projects and a fresh coat of paint. Everything already live still works — nothing's going anywhere.</p>
-
-  <div class="links">
-    <a href="https://mrtyleronly.com/weatherapp">Weather app →</a>
-    <a href="https://mrtyleronly.com/quiz.html">Quiz game →</a>
-  </div>
+  <h1>hello. my name is tyler.</h1>
+  <p class="sub">I enjoy computer stuff. that's really it. let's build something, yeah?</p>
+  <p class="sub">Say hi at <a class="mail" href="mailto:tyler@mrtyleronly.com">tyler@mrtyleronly.com</a>.</p>
 
   <footer>© 2026 Tyler — back soon</footer>
 
